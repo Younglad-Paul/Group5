@@ -10,7 +10,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@wormhole-foundation/sdk": "^0.10.2",
+    "@wormhole-foundation/sdk-base": "^0.10.2",
+    "@wormhole-foundation/sdk-definitions": "^0.10.2",
+    "@wormhole-foundation/sdk-evm": "^0.10.2",
+    "@wormhole-foundation/sdk-evm-tokenbridge": "^0.10.2",
     "@wormhole-foundation/wormhole-connect": "^0.2.7",
+    "ethers": "^6.13.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
