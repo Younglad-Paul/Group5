@@ -1,0 +1,30 @@
+article {
+  @apply w-full px-[1.25rem] rounded-[0.625rem] text-gray-300;
+}
+
+header {
+  @apply flex items-center justify-between cursor-pointer border-b-[1px] border-lightBlue py-2;
+}
+
+header h2 {
+  @apply text-[1.5rem] font-poppins font-[500];
+}
+
+.collapse-tab {
+  @apply h-0 overflow-hidden visible transition-all duration-500 ease-in;
+}
+.collapse-tab p {
+  @apply text-[0.7rem] mt-[0.5rem] font-poppins font-light text-gray-300;
+}
+.collapse-tab.show {
+  @apply h-auto;
+}
+
+@media (max-width: 768px) {
+  article {
+    @apply p-0;
+  }
+  header {
+    @apply flex items-start;
+  }
+}
