@@ -3,7 +3,7 @@ article {
 }
 
 header {
-  @apply flex items-center justify-between cursor-pointer border-b-[1px] border-lightBlue py-2;
+  @apply flex items-center justify-between cursor-pointer border-b-[1px] border-midBlue py-2;
 }
 
 header h2 {

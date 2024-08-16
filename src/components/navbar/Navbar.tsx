@@ -92,12 +92,12 @@ const Navbar = () => {
 
         <div
           className={`fixed top-[4rem] bg-darkBlue border-[1.5px] border-lightBlue 
-            rounded-md md:right-9 w-[19rem] -z-5 py-2 h-[20rem] opacity-0 transition-all duration-200 overflow-hidden ${
-              openNotificationDropdown ? ' opacity-100 z-1' : ''
+            rounded-md md:right-9 w-[19rem] -z-5 py-0 h-0 opacity-0 transition-all duration-200 overflow-hidden ${
+              openNotificationDropdown ? ' opacity-100 z-1 py-2 h-auto' : ''
             }
                 `}
         >
-          <h3 className='px-5 pt-2 mb-2'>Notifications</h3>
+          <h3 className='px-5 pt-4 mb-2'>Notifications</h3>
           <Accordion notifications={notifications} />
         </div>
       </div>
