@@ -59,8 +59,61 @@ const WormholeComponent: React.FC = () => {
   }, []);
 
   return (
-    <div>
-      {/* Your component JSX here */}
+    <div className="max-w-2xl mx-auto p-6 bg-gray-100 rounded-lg shadow-md">
+      <h1 className="text-3xl font-bold mb-6 text-center text-indigo-700">Wormhole Transfer</h1>
+      
+      {/* Initialization Status */}
+      <div className="mb-6 p-4 bg-white rounded-lg shadow">
+        <h2 className="text-xl font-semibold mb-2 text-gray-800">Initialization Status</h2>
+        <p className={`text-lg ${wh ? 'text-green-600' : 'text-red-600'}`}>
+          {wh ? 'Wormhole Initialized' : 'Initializing...'}
+        </p>
+      </div>
+  
+      {/* Chain Information */}
+      <div className="grid grid-cols-2 gap-4 mb-6">
+        <div className="p-4 bg-white rounded-lg shadow">
+          <h3 className="text-lg font-semibold mb-2 text-gray-800">Source Chain</h3>
+          <p className="text-gray-600">{srcChain?.chain || 'Loading...'}</p>
+        </div>
+        <div className="p-4 bg-white rounded-lg shadow">
+          <h3 className="text-lg font-semibold mb-2 text-gray-800">Destination Chain</h3>
+          <p className="text-gray-600">{dstChain?.chain || 'Loading...'}</p>
+        </div>
+      </div>
+  
+      {/* Amount */}
+      <div className="mb-6 p-4 bg-white rounded-lg shadow">
+        <h3 className="text-lg font-semibold mb-2 text-gray-800">Transfer Amount</h3>
+        <p className="text-gray-600">{amt ? amt.toString() : 'Loading...'} (native tokens)</p>
+      </div>
+  
+      {/* Action Buttons */}
+      <div className="flex justify-center space-x-4">
+        <button 
+          className="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition duration-300 disabled:bg-gray-400"
+          disabled={!wh || !srcChain || !dstChain || !sender || !receiver || !tokenBridge || !amt}
+          onClick={() => {/* Implement transfer logic */}}
+        >
+          Transfer
+        </button>
+        <button 
+          className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition duration-300 disabled:bg-gray-400"
+          disabled={!wh || !srcChain || !dstChain || !sender || !receiver || !tokenBridge || !amt}
+          onClick={() => {/* Implement redeem logic */}}
+        >
+          Redeem
+        </button>
+      </div>
+  
+      {/* Status Messages */}
+      <div className="mt-6 p-4 bg-white rounded-lg shadow">
+        <h3 className="text-lg font-semibold mb-2 text-gray-800">Status</h3>
+        <p className="text-gray-600">
+          {/* Add status messages here */}
+          Ready for transfer
+        </p>
+      </div>
     </div>
   );
 };
