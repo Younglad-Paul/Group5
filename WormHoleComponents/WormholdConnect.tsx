@@ -1,34 +1,30 @@
 import React, { useState, useEffect } from 'react';
-import { Wormhole, amount } from "@wormhole-foundation/sdk";
+import { wormhole, amount, Wormhole, signSendWait } from "@wormhole-foundation/sdk";
 import algorand from "@wormhole-foundation/sdk/algorand";
 import aptos from "@wormhole-foundation/sdk/aptos";
 import cosmwasm from "@wormhole-foundation/sdk/cosmwasm";
 import evm from "@wormhole-foundation/sdk/evm";
 import solana from "@wormhole-foundation/sdk/solana";
 import sui from "@wormhole-foundation/sdk/sui";
-import { getSigner } from "./helpers/index.js";
+import { getSigner } from "./evmSigner";
 
 const WormholeComponent: React.FC = () => {
-  const [wh, setWh] = useState<Wormhole | null>(null);
+  const [wh, setWh] = useState<any | null>(null);
   const [srcChain, setSrcChain] = useState<any>(null);
   const [dstChain, setDstChain] = useState<any>(null);
   const [sender, setSender] = useState<any>(null);
   const [receiver, setReceiver] = useState<any>(null);
   const [tokenBridge, setTokenBridge] = useState<any>(null);
   const [amt, setAmt] = useState<bigint | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-  const [transferAmount, setTransferAmount] = useState<string>('0.1');
 
   useEffect(() => {
     const initializeWormhole = async () => {
       try {
-        setLoading(true);
-        const whInstance = await Wormhole.init("Testnet", [evm, solana, aptos, algorand, cosmwasm, sui]);
+        const whInstance = await wormhole("Testnet", [evm, solana, aptos, algorand, cosmwasm, sui]);
         setWh(whInstance);
 
         const srcChainInstance = whInstance.getChain("Solana");
-        const dstChainInstance = whInstance.getChain("Evm");
+        const dstChainInstance = whInstance.getChain("Ethereum");
         setSrcChain(srcChainInstance);
         setDstChain(dstChainInstance);
 
@@ -40,91 +36,135 @@ const WormholeComponent: React.FC = () => {
         const sndTb = await srcChainInstance.getTokenBridge();
         setTokenBridge(sndTb);
 
+        const tokenId = Wormhole.tokenId(srcChainInstance.chain, "native");
         const nativeDecimals = 9; // Replace with actual decimals
-        const amtBigInt = amount.units(amount.parse(transferAmount, nativeDecimals));
+        const amtBigInt = amount.units(amount.parse("0.1", nativeDecimals));
         setAmt(amtBigInt);
 
-        setLoading(false);
+        console.log('Initialization complete', {
+          srcChain: srcChainInstance,
+          dstChain: dstChainInstance,
+          sender: srcSigner,
+          receiver: dstSigner,
+          tokenBridge: sndTb,
+          tokenId,
+          amtBigInt,
+        });
       } catch (error) {
         console.error('Initialization failed:', error);
-        setError('Failed to initialize Wormhole. Please try again.');
-        setLoading(false);
       }
     };
 
     initializeWormhole();
   }, []);
 
-  const handleTransfer = async () => {
-    if (!wh || !srcChain || !dstChain || !sender || !receiver || !tokenBridge || !amt) {
-      setError('Not all required components are initialized');
-      return;
-    }
-
-    try {
-      setLoading(true);
-      const tokenId = Wormhole.tokenId(srcChain.chain, "native");
-      const transferTx = await tokenBridge.transfer(
-        sender,
-        receiver.address,
-        tokenId,
-        amt
-      );
-      const receipt = await transferTx.wait();
-      console.log('Transfer complete:', receipt);
-      setLoading(false);
-    } catch (error) {
-      console.error('Transfer failed:', error);
-      setError('Failed to complete transfer. Please try again.');
-      setLoading(false);
-    }
-  };
-
-  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTransferAmount(e.target.value);
-    if (wh && srcChain) {
-      const nativeDecimals = 9; // Replace with actual decimals
-      const newAmtBigInt = amount.units(amount.parse(e.target.value, nativeDecimals));
-      setAmt(newAmtBigInt);
-    }
-  };
-
   return (
-    <div className="wormhole-component">
-      <h1>Wormhole Cross-Chain Transfer</h1>
-      {loading ? (
-        <p>Loading Wormhole components...</p>
-      ) : error ? (
-        <p className="error">{error}</p>
-      ) : (
-        <>
-          <div className="chain-info">
-            <h2>Chain Information</h2>
-            <p>Source Chain: {srcChain?.chain}</p>
-            <p>Destination Chain: {dstChain?.chain}</p>
-          </div>
-          <div className="transfer-form">
-            <h2>Transfer Details</h2>
-            <label>
-              Amount to Transfer:
-              <input
-                type="number"
-                value={transferAmount}
-                onChange={handleAmountChange}
-                step="0.000000001"
-                min="0"
-              />
-            </label>
-            <p>Sender Address: {sender?.address}</p>
-            <p>Receiver Address: {receiver?.address}</p>
-            <button onClick={handleTransfer} disabled={loading}>
-              {loading ? 'Processing...' : 'Transfer'}
-            </button>
-          </div>
-        </>
-      )}
+    <div>
+      {/* Your component JSX here */}
     </div>
   );
 };
 
 export default WormholeComponent;
+
+// import React, { useState, useEffect } from 'react';
+// import { wormhole } from '@wormhole-foundation/sdk';
+// import { amount, signSendWait } from '@wormhole-foundation/sdk';
+// import evm from '@wormhole-foundation/sdk/evm';
+// import solana from '@wormhole-foundation/sdk/solana';
+// import algorand from '@wormhole-foundation/sdk/algorand';
+// import { getSigner } from './evmSigner';
+
+// const WormholeTransfer = () => {
+//    const [wh, setWh] = useState(null);
+
+//   const [sourceChain, setSourceChain] = useState('Solana');
+//   const [destinationChain, setDestinationChain] = useState('Algorand');
+//   const [amount, setAmount] = useState('0.1');
+//   const [transferTxid, setTransferTxid] = useState(null);
+//   const [redeemTxid, setRedeemTxid] = useState(null);
+//   const [transferCompleted, setTransferCompleted] = useState(false);
+
+//   useEffect(() => {
+//     const initWormhole = async () => {
+//       const wh = await wormhole('Testnet', [evm, solana, algorand]);
+
+
+
+//       const ctx = wh.getChain(sourceChain);
+//       const rcv = wh.getChain(destinationChain);
+//       const sender = await getSigner(ctx);
+//       const receiver = await getSigner(rcv);
+
+//       const sndTb = await ctx.getTokenBridge();
+//       const tokenId = Wormhole.tokenId(ctx.chain, 'native');
+//       const amt = amount.units(amount.parse(amount, ctx.config.nativeTokenDecimals));
+
+//       const transfer = sndTb.transfer(sender.address.address, receiver.address, tokenId.address, amt);
+//       const txids = await signSendWait(ctx, transfer, sender.signer);
+//       setTransferTxid(txids[txids.length - 1]!.txid);
+
+//       const whm = await ctx.parseTransaction(txids[txids.length - 1]!.txid);
+//       const vaa = await wh.getVaa(whm!, 'TokenBridge:Transfer', 60_000);
+
+//       const rcvTb = await rcv.getTokenBridge();
+//       const redeem = rcvTb.redeem(receiver.address.address, vaa!);
+//       const rcvTxids = await signSendWait(rcv, redeem, receiver.signer);
+//       setRedeemTxid(rcvTxids[rcvTxids.length - 1]!.txid);
+
+//       const finished = await rcvTb.isTransferCompleted(vaa!);
+//       setTransferCompleted(finished);
+//     };
+
+//     initWormhole();
+//   }, [sourceChain, destinationChain, amount]);
+
+//   return (
+//     <div>
+//       <h1>Wormhole Transfer</h1>
+//       <form>
+//         <label>
+//           Source Chain:
+//           <select value={sourceChain} onChange={(e) => setSourceChain(e.target.value)}>
+//             <option value="Solana">Solana</option>
+//             <option value="EVM">EVM</option>
+//             <option value="Algorand">Algorand</option>
+//           </select>
+//         </label>
+//         <br />
+//         <label>
+//           Destination Chain:
+//           <select value={destinationChain} onChange={(e) => setDestinationChain(e.target.value)}>
+//             <option value="Solana">Solana</option>
+//             <option value="EVM">EVM</option>
+//             <option value="Algorand">Algorand</option>
+//           </select>
+//         </label>
+//         <br />
+//         <label>
+//           Amount:
+//           <input type="number" value={amount} onChange={(e) => setAmount(e.target.value)} />
+//         </label>
+//         <br />
+//         <button type="submit">Transfer</button>
+//       </form>
+//       {transferTxid && (
+//         <p>
+//           Transfer TXID: {transferTxid}
+//         </p>
+//       )}
+//       {redeemTxid && (
+//         <p>
+//           Redeem TXID: {redeemTxid}
+//         </p>
+//       )}
+//       {transferCompleted && (
+//         <p>
+//           Transfer Completed: {transferCompleted.toString()}
+//         </p>
+//       )}
+//     </div>
+//   );
+// };
+
+// export default WormholeTransfer;
