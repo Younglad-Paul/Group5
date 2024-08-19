@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { wormhole, amount, Wormhole, signSendWait } from "@wormhole-foundation/sdk";
+import { wormhole, amount, Wormhole } from "@wormhole-foundation/sdk";
 import algorand from "@wormhole-foundation/sdk/algorand";
 import aptos from "@wormhole-foundation/sdk/aptos";
 import cosmwasm from "@wormhole-foundation/sdk/cosmwasm";
@@ -7,14 +7,15 @@ import evm from "@wormhole-foundation/sdk/evm";
 import solana from "@wormhole-foundation/sdk/solana";
 import sui from "@wormhole-foundation/sdk/sui";
 import { getSigner } from "./evmSigner";
+import { ethers } from 'ethers';
 
 const WormholeComponent: React.FC = () => {
-  const [wh, setWh] = useState<any | null>(null);
-  const [srcChain, setSrcChain] = useState<any>(null);
-  const [dstChain, setDstChain] = useState<any>(null);
-  const [sender, setSender] = useState<any>(null);
-  const [receiver, setReceiver] = useState<any>(null);
-  const [tokenBridge, setTokenBridge] = useState<any>(null);
+  const [wh, setWh] = useState<Wormhole<"Testnet"> | null>(null);
+  const [srcChain, setSrcChain] = useState<any | null>(null);; 
+  const [dstChain, setDstChain] = useState<any | null>(null);  
+  const [sender, setSender] = useState<ethers.Signer | null>(null); 
+  const [receiver, setReceiver] = useState<ethers.Signer | null>(null);
+  const [tokenBridge, setTokenBridge] = useState<any | null>(null);
   const [amt, setAmt] = useState<bigint | null>(null);
 
   useEffect(() => {
@@ -22,25 +23,28 @@ const WormholeComponent: React.FC = () => {
       try {
         const whInstance = await wormhole("Testnet", [evm, solana, aptos, algorand, cosmwasm, sui]);
         setWh(whInstance);
-
+  
+        // Get source and destination chain instances
         const srcChainInstance = whInstance.getChain("Solana");
         const dstChainInstance = whInstance.getChain("Ethereum");
         setSrcChain(srcChainInstance);
         setDstChain(dstChainInstance);
-
-        const srcSigner = await getSigner(srcChainInstance);
-        const dstSigner = await getSigner(dstChainInstance);
+  
+        // Create signers for source and destination chains
+        const srcSigner = await getSigner(srcChainInstance);  
+        const dstSigner = await getSigner(dstChainInstance);  
         setSender(srcSigner);
         setReceiver(dstSigner);
-
+  
+        // Set token bridge and amount
         const sndTb = await srcChainInstance.getTokenBridge();
         setTokenBridge(sndTb);
-
+  
         const tokenId = Wormhole.tokenId(srcChainInstance.chain, "native");
-        const nativeDecimals = 9; // Replace with actual decimals
+        const nativeDecimals = 9;
         const amtBigInt = amount.units(amount.parse("0.1", nativeDecimals));
         setAmt(amtBigInt);
-
+  
         console.log('Initialization complete', {
           srcChain: srcChainInstance,
           dstChain: dstChainInstance,
@@ -54,15 +58,15 @@ const WormholeComponent: React.FC = () => {
         console.error('Initialization failed:', error);
       }
     };
-
+  
     initializeWormhole();
   }, []);
+  
 
   return (
     <div className="max-w-2xl mx-auto p-6 bg-gray-100 rounded-lg shadow-md">
       <h1 className="text-3xl font-bold mb-6 text-center text-indigo-700">Wormhole Transfer</h1>
       
-      {/* Initialization Status */}
       <div className="mb-6 p-4 bg-white rounded-lg shadow">
         <h2 className="text-xl font-semibold mb-2 text-gray-800">Initialization Status</h2>
         <p className={`text-lg ${wh ? 'text-green-600' : 'text-red-600'}`}>
@@ -70,7 +74,6 @@ const WormholeComponent: React.FC = () => {
         </p>
       </div>
   
-      {/* Chain Information */}
       <div className="grid grid-cols-2 gap-4 mb-6">
         <div className="p-4 bg-white rounded-lg shadow">
           <h3 className="text-lg font-semibold mb-2 text-gray-800">Source Chain</h3>
@@ -82,21 +85,22 @@ const WormholeComponent: React.FC = () => {
         </div>
       </div>
   
-      {/* Amount */}
       <div className="mb-6 p-4 bg-white rounded-lg shadow">
         <h3 className="text-lg font-semibold mb-2 text-gray-800">Transfer Amount</h3>
         <p className="text-gray-600">{amt ? amt.toString() : 'Loading...'} (native tokens)</p>
       </div>
   
-      {/* Action Buttons */}
       <div className="flex justify-center space-x-4">
-        <button 
-          className="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition duration-300 disabled:bg-gray-400"
-          disabled={!wh || !srcChain || !dstChain || !sender || !receiver || !tokenBridge || !amt}
-          onClick={() => {/* Implement transfer logic */}}
-        >
-          Transfer
-        </button>
+      <button 
+  className="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition duration-300 disabled:bg-gray-400"
+  disabled={!wh || !srcChain || !dstChain || !sender || !receiver || !tokenBridge || !amt}
+  onClick={() => {
+    // Implement transfer logic using sender, receiver, and tokenBridge
+  }}
+>
+  Transfer
+</button>
+
         <button 
           className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition duration-300 disabled:bg-gray-400"
           disabled={!wh || !srcChain || !dstChain || !sender || !receiver || !tokenBridge || !amt}
@@ -106,11 +110,9 @@ const WormholeComponent: React.FC = () => {
         </button>
       </div>
   
-      {/* Status Messages */}
       <div className="mt-6 p-4 bg-white rounded-lg shadow">
         <h3 className="text-lg font-semibold mb-2 text-gray-800">Status</h3>
         <p className="text-gray-600">
-          {/* Add status messages here */}
           Ready for transfer
         </p>
       </div>

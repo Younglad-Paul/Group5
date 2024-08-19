@@ -7,13 +7,16 @@ import {
   PlatformNativeSigner,
 } from '@wormhole-foundation/sdk-connect';
 import { ethers } from 'ethers';
-// import  ChainName  from '@wormhole-foundation/wormhole-connect';
+import  ChainName  from '@wormhole-foundation/wormhole-connect';
 
 export type EvmSignerOptions = {
   debug?: boolean;
   maxGasLimit?: bigint;
   overrides?: Partial<ethers.TransactionRequest>;
 };
+
+type ChainName = 'Ethereum' | 'Solana' | 'Algorand';
+
 
 export async function getSigner(
   provider: ethers.Provider,
@@ -22,10 +25,12 @@ export async function getSigner(
 ): Promise<WormholeSigner> {
   const chain = opts?.chain ?? 'Ethereum';
   const address = await signer.getAddress();
-  return new EvmNativeSigner(chain as ChainName, address, signer, opts); // Cannot find name 'ChainName'.ts(2304)
+  return new EvmNativeSigner(chain as ChainName, address, signer, opts); 
 }
 
-export class EvmNativeSigner<N extends Network, C extends ChainName> // Cannot find name 'ChainName'.ts(2304) type ChainName = /*unresolved*/ any
+
+
+export class EvmNativeSigner<N extends Network, C extends ChainName> 
   extends PlatformNativeSigner<ethers.Signer, N, C>
   implements SignOnlySigner<N, C>
 {
