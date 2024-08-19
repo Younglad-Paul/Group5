@@ -80,7 +80,7 @@ const Navbar = () => {
           />
           {true ? (
             <span
-              className=' bg-purple-400 font-medium text-darkBlue px-2 rounded-lg text-[0.85rem]
+              className=' bg-blue-400 font-medium text-darkBlue px-2 rounded-lg text-[0.85rem]
                         absolute -top-2 -right-3'
             >
               {'5'}
