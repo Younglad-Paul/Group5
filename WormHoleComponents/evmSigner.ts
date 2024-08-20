@@ -91,29 +91,15 @@ export type EvmSignerOptions = {
 
 export type ChainName = 'Ethereum' | 'Solana' | 'Algorand';
 
-// export async function getSigner(
-//   chainContext: any
-// ): Promise<WormholeSigner> {
-//   if (typeof window === 'undefined' || !window.ethereum) { // Property 'ethereum' does not exist on type 'Window & typeof globalThis'.ts(2339)
-//     throw new Error('No Ethereum provider found');
-//   }
-
-//   const provider = new ethers.BrowserProvider(window.ethereum); // Property 'ethereum' does not exist on type 'Window & typeof globalThis'.ts(2339)
-//   const signer = await provider.getSigner();
-//   const address = await signer.getAddress();
-//   const chain = chainContext.chain as ChainName;
-
-//   return new EvmNativeSigner(chain, address, signer, { debug: true });
-// }
 
 export async function getSigner(
   chainContext: any
 ): Promise<WormholeSigner> {
-  if (typeof window === 'undefined' || !window.ethereum) {
+  if (typeof window === 'undefined' || typeof window.ethereum === 'undefined') {
     throw new Error('No Ethereum provider found');
   }
 
-  const provider = new ethers.BrowserProvider(window.ethereum as any);
+  const provider = new ethers.BrowserProvider(window.ethereum);
   const signer = await provider.getSigner();
   const address = await signer.getAddress();
   const chain = chainContext.chain as ChainName;

@@ -1,7 +1,7 @@
 import './App.css'
 import WormholeConnect from '@wormhole-foundation/wormhole-connect';
 import WormholeComponent from "../WormHoleComponents/WormholdConnect";
-import WalletAddress from "../helpers/index";
+// import WalletAddress from "../helpers/index";
 
 function App() {
 
@@ -9,7 +9,7 @@ function App() {
     <>
       <WormholeConnect />
       <WormholeComponent />
-      <WalletAddress />
+      {/* <WalletAddress /> */}
     </>
   )
 }
