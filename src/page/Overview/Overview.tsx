@@ -12,8 +12,8 @@ const Overview: React.FC = () => {
       <Navbar />
       <section className='overview px-8'>
         <div className='grid grid-cols-6 grid-rows-2 gap-5 h-[90vh]'>
-          <div className='col-span-4 border-[0.8px] border-midBlue rounded-lg'>
-            <h2>Assets</h2>
+          <div className='col-span-4 border-[0.8px] border-midBlue rounded-lg p-4'>
+            <h2 className='font-bold'>Assets</h2>
           </div>
           <div className='col-span-2 border-[0.8px] border-midBlue rounded-lg flex flex-col items-center'>
             <div className=' w-[4rem] h-[4rem] flex items-center justify-center border-[1px] border-gray-500 rounded-full p-1 bg-[#57565665] mt-10'>
@@ -68,8 +68,10 @@ const Overview: React.FC = () => {
               </div>
             </div>
           </div>
-          <div className='col-span-6 border-[1px] h-[] border-midBlue rounded-lg'>
-            <h2>Transaction History</h2>
+          <div className='col-span-6 border-[1px] h-[] border-midBlue rounded-lg p-4'>
+            <h2 className='w-full text-center font-bold'>
+              Transaction History
+            </h2>
           </div>
         </div>
       </section>

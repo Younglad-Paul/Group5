@@ -63,7 +63,14 @@ const Navbar = () => {
   };
   return (
     <div className='Navbar flex items-center justify-between md:px-8 px-2 py-3'>
-      <div className='text-[2rem]'>LOGO.</div>
+      <div className='text-[2rem] flex items-center'>
+        <img
+          src={'dura.png'}
+          alt='logo'
+          className='w-10 h-10 mr-2'
+        />
+        Dura
+      </div>
       <div className='flex items-center gap-5'>
         <div className='cursor-pointer'>
           <p className='text-right leading-tight text-[0.9rem]'>{'John Doe'}</p>
