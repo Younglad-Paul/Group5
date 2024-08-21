@@ -85,7 +85,7 @@ const Navbar = () => {
             size={16}
             className='cursor-pointer'
           />
-          {true ? (
+          {openNotificationDropdown ? (
             <span
               className=' bg-blue-400 font-medium text-darkBlue px-2 rounded-lg text-[0.85rem]
                         absolute -top-2 -right-3'

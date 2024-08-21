@@ -8,7 +8,7 @@ import {
   HiArrowSmallDown,
 } from 'react-icons/hi2';
 import { useState } from 'react';
-import CryptoCard from '@/components/CryptoCard';
+import CryptoCard from '../../components/CryptoCard';
 
 type walletType = {
   id: number;
