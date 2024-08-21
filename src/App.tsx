@@ -1,5 +1,5 @@
 import './App.css';
-import WormholeConnect from '@wormhole-foundation/wormhole-connect';
+// import WormholeConnect from '@wormhole-foundation/wormhole-connect';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Overview from './page/Overview/Overview';
 
