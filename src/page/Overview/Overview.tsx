@@ -34,7 +34,7 @@ const Overview: React.FC = () => {
     ];
 
     setWallets(initialWallets);
-    setActiveWallet(initialWallets[0]); // Set the first wallet as the active wallet by default
+    setActiveWallet(initialWallets[0]);
   };
 
   const handleWormHolePortal = () => {
@@ -62,9 +62,9 @@ const Overview: React.FC = () => {
     <>
       <Navbar />
       <section className='overview px-8'>
-        <div className='grid grid-cols-8 grid-rows-2 gap-5 h-[90vh] border-[0.8px] border-midBlue rounded-lg p-4'>
+        <div className='flex  gap-5 h-  border-[0.8px] border-midBlue rounded-lg p-4'>
           <div className='col-span-6'>
-            <h2 className='mb-4 ml-5 font-medium text-[1.3rem]'>
+            <h2 className='mb-4 ml-5 font-medium text-[1.3rem] w-8/12'>
               Assets Overview
             </h2>
 
@@ -74,7 +74,7 @@ const Overview: React.FC = () => {
               <CryptoCard />
             </div>
           </div>
-          <div className='col-span-2 flex flex-col items-center border-[0.5px] border-[#5d5d5d33] bg-[#26262c3b] rounded-lg'>
+          <div className='col-span-2 flex flex-col items-center border-[0.5px] border-[#5d5d5d33] bg-[#26262c3b] rounded-lg w-4/12'>
             <div className=' w-[4rem] h-[4rem] flex items-center justify-center border-[1px] border-gray-500 rounded-full p-1 bg-[#57565665] mt-10'>
               {/* <img></img> */}
               <ImUser size={35} />
@@ -101,7 +101,6 @@ const Overview: React.FC = () => {
                       {wallet.walletName}
                     </option>
                   ))}
-                  {/* Add more options as needed */}
                 </select>
                 <p className='text-[0.7rem] font-medium'>
                   {activeWallet?.walletAddress.substring(0, 4) +
@@ -167,7 +166,10 @@ const Overview: React.FC = () => {
               </div>
             </div>
           </div>
-          <div className='col-span-6 border-[1px] h-[] border-midBlue rounded-lg p-4'>
+        </div>
+
+        <div className='w-full'>
+          <div className='col-span-6 border-[1px] h-[] border-midBlue rounded-lg p-4 w-full'>
             <h2 className='w-full text-center font-bold'>
               Transaction History
             </h2>
