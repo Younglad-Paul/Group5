@@ -9,12 +9,15 @@ import {
 } from 'react-icons/hi2';
 import { useState } from 'react';
 import CryptoCard from '../../components/CryptoCard';
+import { CryptoCardPropType } from '../../components/CryptoCard';
+import { FaEthereum } from 'react-icons/fa6';
 
 type walletType = {
   id: number;
   walletName: string;
   walletAddress: string;
 };
+
 const Overview: React.FC = () => {
   const [wallets, setWallets] = useState<walletType[]>([]);
   const [activeWallet, setActiveWallet] = useState<walletType | null>(null);
@@ -37,6 +40,20 @@ const Overview: React.FC = () => {
     setActiveWallet(initialWallets[0]);
   };
 
+  const assets: CryptoCardPropType[] = [
+    {
+      Image: FaEthereum,
+      cryptoName: 'Ethereum (Eth)',
+    },
+    {
+      Image: FaEthereum,
+      cryptoName: 'Ethereum (Eth)',
+    },
+    {
+      Image: FaEthereum,
+      cryptoName: 'Ethereum (Eth)',
+    },
+  ];
   const handleWormHolePortal = () => {
     alert('Wormhole portal under construction');
   };
@@ -61,21 +78,27 @@ const Overview: React.FC = () => {
   return (
     <>
       <Navbar />
-      <section className='overview px-8'>
-        <div className='flex  gap-5 h-  border-[0.8px] border-midBlue rounded-lg p-4'>
-          <div className='col-span-6'>
-            <h2 className='mb-4 ml-5 font-medium text-[1.3rem] w-8/12'>
+      <section className='overview px-8 h-[90vh] flex flex-col'>
+        <div className='flex justify-between border-[0.8px] border-midBlue rounded-lg p-4'>
+          <div className='flex-1'>
+            <h2 className='mb-4 ml-5 font-medium text-[1.3rem]'>
               Assets Overview
             </h2>
 
             <div className=' grid grid-cols-3 gap-x-5 ps-5 pr-16'>
-              <CryptoCard />
-              <CryptoCard />
-              <CryptoCard />
+              {assets.map((asset, id) => (
+                <CryptoCard
+                  key={id}
+                  Image={FaEthereum}
+                  cryptoName={asset.cryptoName}
+                />
+              ))}
             </div>
           </div>
-          <div className='col-span-2 flex flex-col items-center border-[0.5px] border-[#5d5d5d33] bg-[#26262c3b] rounded-lg w-4/12'>
-            <div className=' w-[4rem] h-[4rem] flex items-center justify-center border-[1px] border-gray-500 rounded-full p-1 bg-[#57565665] mt-10'>
+
+          {/* wallet Balance Display  */}
+          <div className='col-span-2 flex flex-col items-center border-[0.5px] border-[#5d5d5d33] bg-[#26262c3b] rounded-lg p-5'>
+            <div className=' w-[3rem] h-[3rem] flex items-center justify-center border-[1px] border-gray-500 rounded-full p-1 bg-[#57565665]'>
               {/* <img></img> */}
               <ImUser size={35} />
             </div>
@@ -115,7 +138,7 @@ const Overview: React.FC = () => {
               <div>
                 <button
                   onClick={connectWallet}
-                  className='px-3 py-2 bg-blue-400 text-gray-300 rounded-md my-3'
+                  className='px-3 py-2 bg-blue-400 hover:opacity-65 text-sm text-midBlue rounded-lg my-3'
                 >
                   Connect Wallet
                 </button>
@@ -168,8 +191,8 @@ const Overview: React.FC = () => {
           </div>
         </div>
 
-        <div className='w-full'>
-          <div className='col-span-6 border-[1px] h-[] border-midBlue rounded-lg p-4 w-full'>
+        <div className='flex-1'>
+          <div className='col-span-6 border-[1px] h-full border-midBlue rounded-lg p-4 w-full'>
             <h2 className='w-full text-center font-bold'>
               Transaction History
             </h2>
