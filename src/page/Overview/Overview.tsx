@@ -52,6 +52,10 @@ const Overview: React.FC = () => {
     {
       Image: FaEthereum,
       cryptoName: 'Ethereum (Eth)',
+      // data: {
+      //   name: "",
+      //   price: number
+      // }
     },
   ];
   const handleWormHolePortal = () => {

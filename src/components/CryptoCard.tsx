@@ -10,33 +10,36 @@ import {
   ReferenceLine,
   ReferenceArea,
   Label,
+  Dot,
 } from 'recharts';
 // import { text } from 'body-parser';
 
 export type CryptoCardPropType = {
   Image: IconType;
   cryptoName: string;
+  //   data: {
+  //     name: string,
+  //     price: number
+  //   }
 };
 
 const data = [
-  { pv: 2400, name: 'a' },
-  { pv: 1398, name: 'b' },
-  { pv: 7800, name: 'c' },
-  { pv: 3908, name: 'd' },
-  { pv: 9800, name: 'e' },
-  { pv: 3800, name: 'f' },
-  { pv: 4300, name: 'g' },
+  { price: 2400, name: 'a' },
+  { price: 7800, name: 'c' },
+  { price: 3900, name: 'd' },
+  { price: 9800, name: 'e' },
+  { price: 9810, name: 'f' },
 ];
 
-const highestValue = Math.max(...data.map((d) => d.pv));
-const lowestValue = Math.min(...data.map((d) => d.pv));
+const highestValue = Math.max(...data.map((d) => d.price));
+const lowestValue = Math.min(...data.map((d) => d.price));
 const midpoint = (highestValue + lowestValue) / 2;
 
-// Define the points for ReferenceArea
-const point1 = data.find((d) => d.name === 'c');
-const point2 = data.find((d) => d.name === 'e');
-const difference =
-  point1 !== undefined && point2 !== undefined ? point2.pv - point1.pv : 0;
+// difference between the Reference point A and B in the Reference Area: for the Label
+const difference: number = data ? data[2].price - data[1].price : 0;
+
+const ReferenAreaPointA: string = data[2].name;
+const ReferenAreaPointB: string = data[1].name;
 
 const CryptoCard = (props: CryptoCardPropType) => {
   return (
@@ -58,10 +61,10 @@ const CryptoCard = (props: CryptoCardPropType) => {
 
       <div className='mb-2 px-4'>
         <p className='text-[0.7rem] text-gray-400'>Reward Rate</p>
-        <p className='text-[1.5rem] font-bold'>13.62%</p>
+        <p className='text-[1.5rem] font-bold'>{'13.62%'}</p>
         <p className='flex items-center text-green-500'>
           <Increase size={15} />
-          <span className='ml-1 text-sm'>6.25%</span>
+          <span className='ml-1 text-sm'>{'6.25%'}</span>
         </p>
       </div>
 
@@ -79,30 +82,30 @@ const CryptoCard = (props: CryptoCardPropType) => {
               hide
             />
             <ReferenceArea
-              x1='c'
-              x2='e'
+              x1={ReferenAreaPointA}
+              x2={ReferenAreaPointB}
               fill='#7969b941'
               stroke='none'
             >
               {difference < 0 ? (
                 <Label
-                  value={`-$${difference}`}
-                  position='insideTop'
+                  value={`-$${Math.abs(difference)}`}
+                  position='insideBottom'
                   offset={10}
                   style={{
-                    fill: '#c73232fd',
-                    fontSize: '12px',
+                    fill: '#f64545fd',
+                    fontSize: '0.7rem',
                     fontWeight: 'normal',
                   }}
                   className='font-poppins'
                 />
               ) : (
                 <Label
-                  value={`+$${difference}`}
+                  value={`+$${Math.abs(difference)}`}
                   position='insideTop'
                   offset={10}
                   style={{
-                    fill: 'green',
+                    fill: '#8884d8',
                     fontSize: '12px',
                     fontWeight: 'normal',
                   }}
@@ -112,19 +115,17 @@ const CryptoCard = (props: CryptoCardPropType) => {
             </ReferenceArea>
             <ReferenceLine
               y={midpoint}
-              stroke='gray'
+              stroke='#57565660'
               strokeDasharray='3 3'
             />
             <Line
               type='monotone'
-              dataKey='pv'
-              stroke='#8884d8'
-            />
+              dot={false}
+              dataKey='price'
+              stroke={difference < 0 ? '#f64545fd' : '#8884d8'}
+            ></Line>
           </LineChart>
         </ResponsiveContainer>
-        <div className='absolute bottom-0 right-0 rounded-lg'>
-          <p className='text-sm font-semibold'>+$2,956</p>
-        </div>
       </div>
     </div>
   );
