@@ -11,6 +11,7 @@ import { useState } from 'react';
 import CryptoCard from '../../components/CryptoCard';
 import { CryptoCardPropType } from '../../components/CryptoCard';
 import { FaEthereum } from 'react-icons/fa6';
+import TransactionHistory from '../../components/TransactionHistory/TransactionHistory';
 
 type walletType = {
   id: number;
@@ -199,6 +200,7 @@ const Overview: React.FC = () => {
           <div className='col-span-6 border-[1px] h-full border-midBlue rounded-lg p-4 w-full'>
             <h2 className='w-full text-center font-bold'>
               Transaction History
+              <TransactionHistory />
             </h2>
           </div>
         </div>
